@@ -1,33 +1,19 @@
-import openai
-import os
+from openai import OpenAI
 
-print("Generating AI report...")
+client = OpenAI()  # Automatically uses your API key from env
 
-# Read extracted text
-for filename in os.listdir("outputs"):
-    if filename.endswith(".txt"):
-        with open(f"outputs/{filename}", "r") as f:
-            text = f.read()
+response = client.chat.completions.create(
+    model="gpt-4",
+    messages=[{
+        "role": "user",
+        "content": f"""
+        Summarize this tender document into:
+        1. Key Requirements
+        2. Technical Specifications
+        3. Compliance Needs
         
-        # Generate report (modify prompt as needed)
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[{
-                "role": "user",
-                "content": f"""
-                Create a professional tender report with:
-                1. Key requirements summary
-                2. Technical methodology
-                3. Compliance checklist
-                
-                Based on this text: {text}
-                """
-            }]
-        )
-        
-        # Save AI output
-        report = response.choices[0].message.content
-        with open(f"outputs/{filename.replace('.txt', '_report.pdf')}", "w") as f:
-            f.write(report)
-
-print("AI report generated!")
+        Document Text: {text[:15000]}
+        """
+    }]
+)
+report = response.choices[0].message.content
