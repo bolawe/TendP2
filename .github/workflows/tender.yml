@@ -2,8 +2,8 @@ name: Tender Report Generator
 on:
   push:
     paths:
-      - 'inputs/**'  # Triggers when you add files to inputs/
-  workflow_dispatch:  # Lets you manually run it
+      - 'inputs/**'
+  workflow_dispatch:
 
 jobs:
   process:
@@ -18,7 +18,8 @@ jobs:
           
       - name: Install dependencies
         run: |
-          sudo apt-get install tesseract-ocr
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr
           pip install pytesseract openai pdf2image
           
       - name: Run OCR and AI
@@ -29,7 +30,7 @@ jobs:
           python scripts/report.py
           
       - name: Upload Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # Updated to v4
         with:
           name: tender-report
           path: outputs/
