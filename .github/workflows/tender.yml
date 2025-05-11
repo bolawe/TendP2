@@ -16,10 +16,13 @@ jobs:
         with:
           python-version: '3.10'
           
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y tesseract-ocr
+          sudo apt-get install -y tesseract-ocr poppler-utils libtesseract-dev  # Critical fix
+          
+      - name: Install Python packages
+        run: |
           pip install pytesseract openai pdf2image
           
       - name: Run OCR and AI
@@ -30,7 +33,7 @@ jobs:
           python scripts/report.py
           
       - name: Upload Report
-        uses: actions/upload-artifact@v4  # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: tender-report
           path: outputs/
