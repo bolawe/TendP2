@@ -23,7 +23,7 @@ jobs:
           
       - name: Install Python packages
         run: |
-          pip install openai pytesseract pdf2image  # Uses latest OpenAI (v1.0+)
+          pip install python-docx openai pytesseract pdf2image  # Uses latest OpenAI (v1.0+)
           
       - name: Run OCR and AI
         env:
