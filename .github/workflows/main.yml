@@ -1,0 +1,27 @@
+name: Tender Report Automation
+on:
+  push:
+    paths:
+      - 'inputs/**'  # Runs when you add files to 'inputs/'
+  schedule:
+    - cron: '0 18 * * 1-5'  # Runs weekdays at 6 PM (edit this)
+
+jobs:
+  generate_reports:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4  # Copies your repo files
+
+      - name: List files (debugging)
+        run: ls -R  # Shows folder structure
+
+      - name: Simulate report generation
+        run: |
+          echo "This is a test report." > outputs/report.txt
+          echo "Workflow ran successfully!"
+
+      - name: Upload output
+        uses: actions/upload-artifact@v3
+        with:
+          name: reports
+          path: outputs/
